@@ -2,6 +2,8 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
+    private GameManager gameManager;
+
     private SpriteRenderer spriteRenderer;
     public Sprite[] sprites;
     private int spriteIndex;
@@ -13,6 +15,7 @@ public class Player : MonoBehaviour
     private void Awake()
     {
         spriteRenderer = GetComponent<SpriteRenderer>();
+        gameManager = FindObjectOfType<GameManager>();
     }
 
     private void Start()
@@ -35,5 +38,17 @@ public class Player : MonoBehaviour
     {
         spriteIndex = (spriteIndex + 1) % sprites.Length;
         spriteRenderer.sprite = sprites[spriteIndex];
+    }
+
+    private void OnTriggerEnter2D(Collider2D other)
+    {
+        if (other.gameObject.tag == "Scoring")
+        {
+            gameManager.IncreaseScore();
+        }
+        else if (other.gameObject.tag == "Obstacle")
+        {
+            gameManager.GameOver();
+        }
     }
 }
