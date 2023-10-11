@@ -7,12 +7,11 @@ public class GameManager : MonoBehaviour
     private int score;
 
     public Text scoreText;
-    public Text timeText;
 
     public GameObject playButton;
     public GameObject gameOver;
     public GameObject spawner;
-    public GameObject powerUp;
+    public GameObject powerUpSpawner;
 
     public Sprite gameOverSprite;
     public Sprite getReadySprite;
@@ -26,11 +25,6 @@ public class GameManager : MonoBehaviour
         Play();
     }
 
-    public void Update()
-    {
-        timeText.text = Time.timeSinceLevelLoad.ToString();
-    }
-
     public void Play()
     {
         DiableScoringSystem();
@@ -39,6 +33,7 @@ public class GameManager : MonoBehaviour
         playButton.SetActive(false);
         player.enabled = true;
         DestroyAllPipes();
+
     }
 
     IEnumerator DisplayGetReady()
@@ -54,13 +49,13 @@ public class GameManager : MonoBehaviour
 
     public void Pause()
     {
-        DiablePowerUpSystem();
         Time.timeScale = 0f;
         player.enabled = false;
     }
 
     public void GameOver()
     {
+        DiablePowerUpSystem();
         gameOver.GetComponent<Image>().sprite = gameOverSprite;
         gameOver.SetActive(true);
         playButton.SetActive(true);
@@ -80,6 +75,14 @@ public class GameManager : MonoBehaviour
             Destroy(pipes[i].gameObject);
     }
 
+    private bool DestroyAllPowerUps()
+    {
+        PowerUps[] powerUps = FindObjectsOfType<PowerUps>();
+        for (int i = 0; i < powerUps.Length; i++)
+            Destroy(powerUps[i].gameObject);
+        return true;
+    }
+
     private void EnableScoringSystem()
     {
         scoreText.gameObject.SetActive(true);
@@ -89,7 +92,7 @@ public class GameManager : MonoBehaviour
 
     private void EnablePowerUpSystem()
     {
-        powerUp.gameObject.SetActive(true);
+        powerUpSpawner.gameObject.SetActive(true);
     }
 
     private void DiableScoringSystem()
@@ -99,7 +102,8 @@ public class GameManager : MonoBehaviour
 
     private void DiablePowerUpSystem()
     {
-        powerUp.gameObject.SetActive(false);
+        if (DestroyAllPowerUps())
+            powerUpSpawner.gameObject.SetActive(false);
     }
 
     public void EnableSpawner()
@@ -116,5 +120,5 @@ public class GameManager : MonoBehaviour
     {
         player.ReverseGravity();
     }
-    
+
 }

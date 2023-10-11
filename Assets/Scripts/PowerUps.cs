@@ -1,10 +1,14 @@
 using System.Collections;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class PowerUps : MonoBehaviour
 {
     private GameManager gameManager;
+
+    public Text powerUpText;
+    private string powerUpMessage;
 
     public float speed = 5f;
     private float leftEdge;
@@ -24,9 +28,11 @@ public class PowerUps : MonoBehaviour
             Destroy(gameObject);
     }
 
-    public void SetPowerUpDuration(float powerUpDuration)
+    public void SetPowerUp(string powerUpMessage, Text powerUpText, float powerUpDuration)
     {
         this.powerUpDuration = powerUpDuration;
+        this.powerUpText = powerUpText;
+        this.powerUpMessage = powerUpMessage;
     }
 
     private void OnTriggerEnter2D(Collider2D other)
@@ -39,11 +45,13 @@ public class PowerUps : MonoBehaviour
     private void EnforcePower()
     {
         gameManager.ReverseGravity();
+        powerUpText.text = powerUpMessage;
     }
 
     IEnumerator RemovePower()
     {
         yield return new WaitForSecondsRealtime(powerUpDuration);
         gameManager.ReverseGravity();
+        powerUpText.text = "";
     }
 }

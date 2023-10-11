@@ -2,20 +2,21 @@ using System;
 using System.Collections;
 using Unity.Mathematics;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class PowerUpSpawner : MonoBehaviour
 {
     private GameManager gameManager;
     public PowerUps powerUp;
 
-    public float minPowerUpDelay = 2f;
-    public float maxPowerUpDelay = 5f;
+    public Text powerUpText;
+    public float powerUpDuration = 10f;
+
+    public float minPowerUpDelay = 5f;
+    public float maxPowerUpDelay = 10f;
     public float powerUpTimePeriod = 2f;
-    public float powerUpDuration = 2f;
 
     public float nextPowerUpTime;
-    public float powerUpSpawnTime;
-    public float powerUpLapseTime;
     public bool timePeriodSpawned = false;
     public bool powerUpSpawned = false;
 
@@ -29,10 +30,9 @@ public class PowerUpSpawner : MonoBehaviour
 
     private void OnEnable()
     {
+        powerUpText.text = "";
         timePeriodSpawned = false;
         nextPowerUpTime = Time.timeSinceLevelLoad + UnityEngine.Random.Range(minPowerUpDelay, maxPowerUpDelay);
-        powerUpSpawnTime = 0;
-        powerUpLapseTime = 0;
     }
 
     private void Update()
@@ -47,9 +47,7 @@ public class PowerUpSpawner : MonoBehaviour
     {
         gameManager.DisableSpawner();
         timePeriodSpawned = true;
-        powerUpSpawnTime = nextPowerUpTime + powerUpTimePeriod / 2;
-        powerUpLapseTime = nextPowerUpTime + powerUpTimePeriod;
-        nextPowerUpTime = Time.timeSinceLevelLoad + UnityEngine.Random.Range(minPowerUpDelay, maxPowerUpDelay) + powerUpTimePeriod;
+        nextPowerUpTime = Time.timeSinceLevelLoad + UnityEngine.Random.Range(minPowerUpDelay, maxPowerUpDelay) + powerUpTimePeriod/2 + powerUpDuration;
         StartCoroutine(SpawnPowerUp());
         StartCoroutine(PowerUpPeriodLapsed());
     }
@@ -57,12 +55,11 @@ public class PowerUpSpawner : MonoBehaviour
     IEnumerator SpawnPowerUp()
     {
         yield return new WaitForSecondsRealtime(powerUpTimePeriod / 2);
-        Debug.Log("PowerUp Spawned");
 
         Vector3 direction = transform.position;
         direction.y = UnityEngine.Random.Range(minHeight, maxHeight);
         PowerUps spawnedPowerUp = Instantiate(powerUp, direction, quaternion.identity);
-        spawnedPowerUp.SetPowerUpDuration(powerUpDuration);
+        spawnedPowerUp.SetPowerUp("Reverse Gravity", powerUpText, powerUpDuration);
         powerUpSpawned = true;
     }
 
