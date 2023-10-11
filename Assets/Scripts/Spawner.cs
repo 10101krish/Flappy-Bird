@@ -4,6 +4,8 @@ using UnityEngine.UIElements;
 public class Spawner : MonoBehaviour
 {
     public GameObject prefab;
+    public GameObject scenePipes;
+
     public float spawnRate = 1f;
     public float minHeight = -1f;
     public float maxHeight = 2f;
@@ -22,7 +24,7 @@ public class Spawner : MonoBehaviour
     {
         GameObject pipes = Instantiate(prefab, transform.position, Unity.Mathematics.quaternion.identity) as GameObject;
         pipes.transform.position += Vector3.up * Random.Range(minHeight, maxHeight);
-        pipes.transform.parent = transform;
+        pipes.transform.parent = scenePipes.transform;
     }
 
 }

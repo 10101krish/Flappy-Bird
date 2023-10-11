@@ -12,6 +12,8 @@ public class Player : MonoBehaviour
     public float gravity = -9.8f;
     public float strength = 5f;
 
+    private float reverseGravity = 1;
+
     private void Awake()
     {
         spriteRenderer = GetComponent<SpriteRenderer>();
@@ -27,16 +29,17 @@ public class Player : MonoBehaviour
     {
         transform.position = Vector3.zero;
         direction = Vector3.zero;
+        reverseGravity = 1;
     }
 
     private void Update()
     {
         if (Input.GetKeyDown(KeyCode.Space) || Input.GetKeyDown(KeyCode.UpArrow) || Input.GetMouseButtonDown(0))
         {
-            direction = Vector3.up * strength;
+            direction = Vector3.up * strength * reverseGravity;
         }
 
-        direction.y += gravity * Time.deltaTime;
+        direction.y += gravity * reverseGravity * Time.deltaTime;
         transform.position += direction * Time.deltaTime;
     }
 
@@ -48,13 +51,20 @@ public class Player : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-        if (other.gameObject.tag == "Scoring")
+        if (other.gameObject.CompareTag("Scoring"))
         {
             gameManager.IncreaseScore();
         }
-        else if (other.gameObject.tag == "Obstacle")
+        else if (other.gameObject.CompareTag("Obstacle"))
         {
             gameManager.GameOver();
         }
+    }
+
+    public void ReverseGravity()
+    {
+        transform.position = Vector3.zero;
+        direction = Vector3.zero;
+        reverseGravity *= -1;
     }
 }

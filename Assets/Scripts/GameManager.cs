@@ -7,8 +7,12 @@ public class GameManager : MonoBehaviour
     private int score;
 
     public Text scoreText;
+    public Text timeText;
+
     public GameObject playButton;
     public GameObject gameOver;
+    public GameObject spawner;
+    public GameObject powerUp;
 
     public Sprite gameOverSprite;
     public Sprite getReadySprite;
@@ -19,13 +23,17 @@ public class GameManager : MonoBehaviour
     private void Awake()
     {
         Application.targetFrameRate = 60;
-        Pause();
+        Play();
+    }
+
+    public void Update()
+    {
+        timeText.text = Time.timeSinceLevelLoad.ToString();
     }
 
     public void Play()
     {
-        scoreText.gameObject.SetActive(false);
-
+        DiableScoringSystem();
         StartCoroutine(DisplayGetReady());
 
         playButton.SetActive(false);
@@ -41,17 +49,12 @@ public class GameManager : MonoBehaviour
         gameOver.SetActive(false);
         Time.timeScale = 1;
         EnableScoringSystem();
-    }
-
-    private void EnableScoringSystem()
-    {
-        scoreText.gameObject.SetActive(true);
-        score = 0;
-        scoreText.text = score.ToString();
+        EnablePowerUpSystem();
     }
 
     public void Pause()
     {
+        DiablePowerUpSystem();
         Time.timeScale = 0f;
         player.enabled = false;
     }
@@ -76,4 +79,42 @@ public class GameManager : MonoBehaviour
         for (int i = 0; i < pipes.Length; i++)
             Destroy(pipes[i].gameObject);
     }
+
+    private void EnableScoringSystem()
+    {
+        scoreText.gameObject.SetActive(true);
+        score = 0;
+        scoreText.text = score.ToString();
+    }
+
+    private void EnablePowerUpSystem()
+    {
+        powerUp.gameObject.SetActive(true);
+    }
+
+    private void DiableScoringSystem()
+    {
+        scoreText.gameObject.SetActive(false);
+    }
+
+    private void DiablePowerUpSystem()
+    {
+        powerUp.gameObject.SetActive(false);
+    }
+
+    public void EnableSpawner()
+    {
+        spawner.SetActive(true);
+    }
+
+    public void DisableSpawner()
+    {
+        spawner.SetActive(false);
+    }
+
+    public void ReverseGravity()
+    {
+        player.ReverseGravity();
+    }
+    
 }
