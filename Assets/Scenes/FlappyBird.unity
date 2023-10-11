@@ -313,6 +313,8 @@ MonoBehaviour:
   scoreText: {fileID: 441251818}
   playButton: {fileID: 897339254}
   gameOver: {fileID: 1777229038}
+  gameOverSprite: {fileID: 21300000, guid: 870acec51027cb14e80c428dac8d1a6b, type: 3}
+  getReadySprite: {fileID: 21300000, guid: c6c26a88d8686c148a09408837d9d98d, type: 3}
   player: {fileID: 553590003}
 --- !u!1 &441251816
 GameObject:

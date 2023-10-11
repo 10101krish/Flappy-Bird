@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -9,6 +10,10 @@ public class GameManager : MonoBehaviour
     public GameObject playButton;
     public GameObject gameOver;
 
+    public Sprite gameOverSprite;
+    public Sprite getReadySprite;
+
+
     public Player player;
 
     private void Awake()
@@ -19,16 +24,30 @@ public class GameManager : MonoBehaviour
 
     public void Play()
     {
-        score = 0;
-        scoreText.text = score.ToString();
+        scoreText.gameObject.SetActive(false);
+
+        StartCoroutine(DisplayGetReady());
 
         playButton.SetActive(false);
-        gameOver.SetActive(false);
-
-        Time.timeScale = 1;
         player.enabled = true;
-
         DestroyAllPipes();
+    }
+
+    IEnumerator DisplayGetReady()
+    {
+        gameOver.GetComponent<Image>().sprite = getReadySprite;
+
+        yield return new WaitForSecondsRealtime(1);
+        gameOver.SetActive(false);
+        Time.timeScale = 1;
+        EnableScoringSystem();
+    }
+
+    private void EnableScoringSystem()
+    {
+        scoreText.gameObject.SetActive(true);
+        score = 0;
+        scoreText.text = score.ToString();
     }
 
     public void Pause()
@@ -39,6 +58,7 @@ public class GameManager : MonoBehaviour
 
     public void GameOver()
     {
+        gameOver.GetComponent<Image>().sprite = gameOverSprite;
         gameOver.SetActive(true);
         playButton.SetActive(true);
         Pause();
