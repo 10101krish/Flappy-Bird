@@ -20,7 +20,7 @@ public class ScoreSystem : MonoBehaviour
     public void ResetScore()
     {
         UpdateScoreText(0);
-        scoreText.color = Color.white;
+        UnHighlightHighScore();
     }
 
     public void IncreaseScore(int increase)
@@ -40,6 +40,12 @@ public class ScoreSystem : MonoBehaviour
     {
         scoreText.color = Color.yellow;
         highScoreText.gameObject.SetActive(true);
+    }
+    
+    public void UnHighlightHighScore()
+    {
+        scoreText.color = Color.white;
+        highScoreText.gameObject.SetActive(false);
     }
 
     public void GameOver()

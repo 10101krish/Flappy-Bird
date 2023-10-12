@@ -1,12 +1,12 @@
 using System.Collections;
 using UnityEngine;
-using UnityEngine.SocialPlatforms.Impl;
 using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
 {
     public Player player;
-    public Text powerUpText;
+    public Text reverseGravityText;
+    public Text scoreMultiplierText;
 
     public GameObject playButton;
     public GameObject gameOver;
@@ -18,7 +18,12 @@ public class GameManager : MonoBehaviour
 
     private ScoreSystem scoreSystem;
 
-    public bool ReverseGravityActivated = false;
+    private bool reverseGravityActivated = false;
+
+    private int scoreMultiplier = 1;
+    private float multiplierDuration;
+    private float mutiplierStartTime;
+    public float timeSinceLevelLoad;
 
     private void Awake()
     {
@@ -28,9 +33,17 @@ public class GameManager : MonoBehaviour
         Pause();
     }
 
+    private void Update()
+    {
+        if (scoreMultiplier != 1 && ((multiplierDuration + mutiplierStartTime) < Time.timeSinceLevelLoad))
+            DisableScoreMultiplier();
+        timeSinceLevelLoad = Time.timeSinceLevelLoad;
+    }
+
     public void Play()
     {
-        powerUpText.text = "";
+        reverseGravityText.text = "";
+        DisableScoreMultiplier();
         DisableScoringSystem();
         StartCoroutine(DisplayGetReady());
 
@@ -42,7 +55,7 @@ public class GameManager : MonoBehaviour
     IEnumerator DisplayGetReady()
     {
         gameOver.GetComponent<Image>().sprite = getReadySprite;
-
+        EnableScoringSystem();
         yield return new WaitForSecondsRealtime(1);
         gameOver.SetActive(false);
         Time.timeScale = 1;
@@ -61,6 +74,7 @@ public class GameManager : MonoBehaviour
     {
         scoreSystem.GameOver();
         DisablePowerUpSystem();
+
         gameOver.GetComponent<Image>().sprite = gameOverSprite;
         gameOver.SetActive(true);
         playButton.SetActive(true);
@@ -70,7 +84,7 @@ public class GameManager : MonoBehaviour
 
     public void IncreaseScore()
     {
-        scoreSystem.IncreaseScore(1);
+        scoreSystem.IncreaseScore(1 * scoreMultiplier);
     }
 
     private void DestroyAllPipes()
@@ -96,7 +110,6 @@ public class GameManager : MonoBehaviour
     private void EnableAllSystems()
     {
         EnablePowerUpSystem();
-        EnableScoringSystem();
         EnablePipeSpawner();
     }
 
@@ -136,15 +149,29 @@ public class GameManager : MonoBehaviour
     public void ReverseGravityMethod(string powerUpMessage)
     {
         player.ReverseGravity();
-        if (!ReverseGravityActivated)
+        if (!reverseGravityActivated)
         {
-            ReverseGravityActivated = true;
-            powerUpText.text = powerUpMessage;
+            reverseGravityActivated = true;
+            reverseGravityText.text = "Reverse Gravity";
         }
         else
         {
-            ReverseGravityActivated = false;
-            powerUpText.text = "";
+            reverseGravityActivated = false;
+            reverseGravityText.text = "";
         }
+    }
+
+    public void EnableScoreMultiplier(int multiplier, float powerUpDuration)
+    {
+        scoreMultiplier *= multiplier;
+        multiplierDuration = powerUpDuration;
+        mutiplierStartTime = Time.timeSinceLevelLoad;
+        scoreMultiplierText.text = scoreMultiplier.ToString() + "X";
+    }
+
+    private void DisableScoreMultiplier()
+    {
+        scoreMultiplierText.text = "";
+        scoreMultiplier = 1;
     }
 }

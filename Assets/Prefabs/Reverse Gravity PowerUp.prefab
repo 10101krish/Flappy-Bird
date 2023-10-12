@@ -10,10 +10,11 @@ GameObject:
   m_Component:
   - component: {fileID: 7749851022438025202}
   - component: {fileID: 8153551395651204573}
-  - component: {fileID: 9890457813894896}
   - component: {fileID: 6924365022460807246}
+  - component: {fileID: -1919689239363045819}
+  - component: {fileID: -6635164806290640083}
   m_Layer: 0
-  m_Name: Reverse PowerUp
+  m_Name: Reverse Gravity PowerUp
   m_TagString: Power
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -86,19 +87,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &9890457813894896
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1767083428225823561}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ead0d1fd3b8f06340b13f1f587e9de32, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  speed: 5
 --- !u!61 &6924365022460807246
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -144,3 +132,30 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 2, y: 1.0416666}
   m_EdgeRadius: 0
+--- !u!114 &-1919689239363045819
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1767083428225823561}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ead0d1fd3b8f06340b13f1f587e9de32, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  speed: 5
+  powerUpDuration: 10
+--- !u!114 &-6635164806290640083
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1767083428225823561}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b00e917fbb2fa564da84c15e24ebbf2c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  powerUpMessage: Reverse Gravity
