@@ -6,7 +6,7 @@ public class PowerUps : MonoBehaviour
 {
     private GameManager gameManager;
 
-    public Text powerUpText;
+
     private string powerUpMessage;
 
     public float speed = 5f;
@@ -29,10 +29,9 @@ public class PowerUps : MonoBehaviour
         }
     }
 
-    public void SetPowerUp(string powerUpMessage, Text powerUpText, float powerUpDuration)
+    public void SetPowerUp(string powerUpMessage, float powerUpDuration)
     {
         this.powerUpDuration = powerUpDuration;
-        this.powerUpText = powerUpText;
         this.powerUpMessage = powerUpMessage;
     }
 
@@ -40,23 +39,8 @@ public class PowerUps : MonoBehaviour
     {
         if (other.gameObject.tag == "Player")
         {
-            EnforcePower();
-            StartCoroutine(RemovePower());
-            GetComponent<SpriteRenderer>().enabled = false;
+            gameManager.ReverseGravityMethod(powerUpDuration, powerUpMessage);
+            Destroy(this.gameObject);
         }
-    }
-
-    private void EnforcePower()
-    {
-        gameManager.ReverseGravity();
-        powerUpText.text = powerUpMessage;
-    }
-
-    IEnumerator RemovePower()
-    {
-        yield return new WaitForSecondsRealtime(powerUpDuration);
-        gameManager.ReverseGravity();
-        powerUpText.text = "";
-        Destroy(this.gameObject);
     }
 }

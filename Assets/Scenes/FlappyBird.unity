@@ -311,6 +311,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   scoreText: {fileID: 441251818}
+  powerUpText: {fileID: 1035982531}
   playButton: {fileID: 897339254}
   gameOver: {fileID: 1777229038}
   spawner: {fileID: 1183565866}
@@ -1015,7 +1016,7 @@ GameObject:
   - component: {fileID: 1183565867}
   - component: {fileID: 1183565868}
   m_Layer: 0
-  m_Name: Spawner
+  m_Name: Pipes Spawner
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1051,8 +1052,8 @@ MonoBehaviour:
   prefab: {fileID: 4659500303863390110, guid: c1db09ac3ccffc742bbc907d839e8f3a, type: 3}
   scenePipes: {fileID: 2101519761}
   spawnRate: 1
-  minHeight: -1
-  maxHeight: 1
+  minHeight: 0
+  maxHeight: 0
 --- !u!1 &1347678621
 GameObject:
   m_ObjectHideFlags: 0
@@ -1369,11 +1370,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   powerUp: {fileID: 9890457813894896, guid: 82343af56be138c47bec7116e174b2b7, type: 3}
-  powerUpText: {fileID: 1035982531}
-  powerUpDuration: 10
-  minPowerUpDelay: 20
-  maxPowerUpDelay: 30
+  powerUpDuration: 2
+  minPowerUpDelay: 10
+  maxPowerUpDelay: 10
   powerUpTimePeriod: 2
+  nextPowerUpTime: 0
+  powerUpSpawned: 0
   minHeight: -1
   maxHeight: 2
 --- !u!1660057539 &9223372036854775807

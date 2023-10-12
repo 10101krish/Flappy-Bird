@@ -7,6 +7,7 @@ public class GameManager : MonoBehaviour
     private int score;
 
     public Text scoreText;
+    public Text powerUpText;
 
     public GameObject playButton;
     public GameObject gameOver;
@@ -26,6 +27,7 @@ public class GameManager : MonoBehaviour
 
     public void Play()
     {
+        powerUpText.text = "";
         DisableScoringSystem();
         StartCoroutine(DisplayGetReady());
 
@@ -121,8 +123,22 @@ public class GameManager : MonoBehaviour
         spawner.SetActive(false);
     }
 
-    public void ReverseGravity()
+    public void ReverseGravityMethod(float powerUpDuration, string powerUpMessage)
+    {
+        EnableGravityReverse();
+        powerUpText.text = powerUpMessage;
+        StartCoroutine(DisableGravityReverse(powerUpDuration));
+    }
+
+    private void EnableGravityReverse()
     {
         player.ReverseGravity();
+    }
+
+    IEnumerator DisableGravityReverse(float powerUpDuration)
+    {
+        yield return new WaitForSecondsRealtime(powerUpDuration);
+        player.ReverseGravity();
+        powerUpText.text = "";
     }
 }
