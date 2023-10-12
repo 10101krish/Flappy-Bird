@@ -16,7 +16,6 @@ public class GameManager : MonoBehaviour
     public Sprite gameOverSprite;
     public Sprite getReadySprite;
 
-
     public Player player;
 
     private void Awake()
@@ -27,13 +26,12 @@ public class GameManager : MonoBehaviour
 
     public void Play()
     {
-        DiableScoringSystem();
+        DisableScoringSystem();
         StartCoroutine(DisplayGetReady());
 
         playButton.SetActive(false);
         player.enabled = true;
         DestroyAllPipes();
-
     }
 
     IEnumerator DisplayGetReady()
@@ -55,7 +53,7 @@ public class GameManager : MonoBehaviour
 
     public void GameOver()
     {
-        DiablePowerUpSystem();
+        DisablePowerUpSystem();
         gameOver.GetComponent<Image>().sprite = gameOverSprite;
         gameOver.SetActive(true);
         playButton.SetActive(true);
@@ -71,15 +69,20 @@ public class GameManager : MonoBehaviour
     private void DestroyAllPipes()
     {
         Pipes[] pipes = FindObjectsOfType<Pipes>();
-        for (int i = 0; i < pipes.Length; i++)
-            Destroy(pipes[i].gameObject);
+        foreach (var pipe in pipes)
+        {
+            Destroy(pipe.gameObject);
+        }
     }
 
     private bool DestroyAllPowerUps()
     {
         PowerUps[] powerUps = FindObjectsOfType<PowerUps>();
-        for (int i = 0; i < powerUps.Length; i++)
-            Destroy(powerUps[i].gameObject);
+        foreach (var powerUp in powerUps)
+        {
+            Destroy(powerUp.gameObject);
+        }
+
         return true;
     }
 
@@ -95,15 +98,17 @@ public class GameManager : MonoBehaviour
         powerUpSpawner.gameObject.SetActive(true);
     }
 
-    private void DiableScoringSystem()
+    private void DisableScoringSystem()
     {
         scoreText.gameObject.SetActive(false);
     }
 
-    private void DiablePowerUpSystem()
+    private void DisablePowerUpSystem()
     {
         if (DestroyAllPowerUps())
+        {
             powerUpSpawner.gameObject.SetActive(false);
+        }
     }
 
     public void EnableSpawner()
@@ -120,5 +125,4 @@ public class GameManager : MonoBehaviour
     {
         player.ReverseGravity();
     }
-
 }

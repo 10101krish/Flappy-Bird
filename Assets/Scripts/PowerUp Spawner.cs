@@ -1,4 +1,3 @@
-using System;
 using System.Collections;
 using Unity.Mathematics;
 using UnityEngine;
@@ -16,9 +15,8 @@ public class PowerUpSpawner : MonoBehaviour
     public float maxPowerUpDelay = 10f;
     public float powerUpTimePeriod = 2f;
 
-    public float nextPowerUpTime;
-    public bool timePeriodSpawned = false;
-    public bool powerUpSpawned = false;
+    private float nextPowerUpTime;
+    private bool powerUpSpawned = false;
 
     public float minHeight = -1f;
     public float maxHeight = 2f;
@@ -31,28 +29,27 @@ public class PowerUpSpawner : MonoBehaviour
     private void OnEnable()
     {
         powerUpText.text = "";
-        timePeriodSpawned = false;
         nextPowerUpTime = Time.timeSinceLevelLoad + UnityEngine.Random.Range(minPowerUpDelay, maxPowerUpDelay);
     }
 
     private void Update()
     {
-        if (!timePeriodSpawned && Time.timeSinceLevelLoad >= nextPowerUpTime)
+        if (!powerUpSpawned && Time.timeSinceLevelLoad >= nextPowerUpTime)
         {
-            SpawnPowerUpMethod();
+            SpawnPowerUp();
         }
     }
 
-    private void SpawnPowerUpMethod()
+    private void SpawnPowerUp()
     {
         gameManager.DisableSpawner();
-        timePeriodSpawned = true;
-        nextPowerUpTime = Time.timeSinceLevelLoad + UnityEngine.Random.Range(minPowerUpDelay, maxPowerUpDelay) + powerUpTimePeriod/2 + powerUpDuration;
-        StartCoroutine(SpawnPowerUp());
-        StartCoroutine(PowerUpPeriodLapsed());
+        powerUpSpawned = true;
+        nextPowerUpTime = Time.timeSinceLevelLoad + UnityEngine.Random.Range(minPowerUpDelay, maxPowerUpDelay) + powerUpTimePeriod;
+        StartCoroutine(SpawnPowerUpCoroutine());
+        StartCoroutine(PowerUpPeriodLapsedCoroutine());
     }
 
-    IEnumerator SpawnPowerUp()
+    IEnumerator SpawnPowerUpCoroutine()
     {
         yield return new WaitForSecondsRealtime(powerUpTimePeriod / 2);
 
@@ -60,14 +57,12 @@ public class PowerUpSpawner : MonoBehaviour
         direction.y = UnityEngine.Random.Range(minHeight, maxHeight);
         PowerUps spawnedPowerUp = Instantiate(powerUp, direction, quaternion.identity);
         spawnedPowerUp.SetPowerUp("Reverse Gravity", powerUpText, powerUpDuration);
-        powerUpSpawned = true;
     }
 
-    IEnumerator PowerUpPeriodLapsed()
+    IEnumerator PowerUpPeriodLapsedCoroutine()
     {
         yield return new WaitForSecondsRealtime(powerUpTimePeriod);
         gameManager.EnableSpawner();
-        timePeriodSpawned = false;
         powerUpSpawned = false;
     }
 }

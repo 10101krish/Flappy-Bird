@@ -1,5 +1,4 @@
 using System.Collections;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -25,7 +24,9 @@ public class PowerUps : MonoBehaviour
         transform.position += speed * Time.deltaTime * Vector3.left;
 
         if (transform.position.x < leftEdge)
-            Destroy(gameObject);
+        {
+            Destroy(this.gameObject);
+        }
     }
 
     public void SetPowerUp(string powerUpMessage, Text powerUpText, float powerUpDuration)
@@ -37,9 +38,12 @@ public class PowerUps : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-        EnforcePower();
-        StartCoroutine(RemovePower());
-        GetComponent<SpriteRenderer>().enabled = false;
+        if (other.gameObject.tag == "Player")
+        {
+            EnforcePower();
+            StartCoroutine(RemovePower());
+            GetComponent<SpriteRenderer>().enabled = false;
+        }
     }
 
     private void EnforcePower()
@@ -53,5 +57,6 @@ public class PowerUps : MonoBehaviour
         yield return new WaitForSecondsRealtime(powerUpDuration);
         gameManager.ReverseGravity();
         powerUpText.text = "";
+        Destroy(this.gameObject);
     }
 }

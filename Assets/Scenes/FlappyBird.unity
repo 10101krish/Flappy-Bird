@@ -950,7 +950,7 @@ MonoBehaviour:
       m_Calls: []
   m_FontData:
     m_Font: {fileID: 12800000, guid: 7d09cb86f99674e4bbc73a220384e472, type: 3}
-    m_FontSize: 150
+    m_FontSize: 200
     m_FontStyle: 0
     m_BestFit: 0
     m_MinSize: 0
@@ -1371,12 +1371,9 @@ MonoBehaviour:
   powerUp: {fileID: 9890457813894896, guid: 82343af56be138c47bec7116e174b2b7, type: 3}
   powerUpText: {fileID: 1035982531}
   powerUpDuration: 10
-  minPowerUpDelay: 5
-  maxPowerUpDelay: 10
+  minPowerUpDelay: 20
+  maxPowerUpDelay: 30
   powerUpTimePeriod: 2
-  nextPowerUpTime: 0
-  timePeriodSpawned: 0
-  powerUpSpawned: 0
   minHeight: -1
   maxHeight: 2
 --- !u!1660057539 &9223372036854775807

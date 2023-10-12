@@ -65,6 +65,6 @@ public class Player : MonoBehaviour
     {
         transform.position = Vector3.zero;
         direction = Vector3.zero;
-        reverseGravity *= -1;
+        reverseGravity *= -1f;
     }
 }
