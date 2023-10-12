@@ -9,10 +9,9 @@ public class PowerUpSpawner : MonoBehaviour
     public PowerUps powerUp;
 
     public float powerUpDuration = 2f;
-
     public float minPowerUpDelay = 10f;
     public float maxPowerUpDelay = 10f;
-    public float powerUpTimePeriod = 1f;
+    public float powerUpTimePeriod = 2f;
 
     public float nextPowerUpTime;
     public bool powerUpSpawned = false;
@@ -40,27 +39,31 @@ public class PowerUpSpawner : MonoBehaviour
 
     private void SpawnPowerUp()
     {
-        gameManager.DisableSpawner();
+        gameManager.DisablePipeSpawner();
         powerUpSpawned = true;
-        nextPowerUpTime = Time.timeSinceLevelLoad + UnityEngine.Random.Range(minPowerUpDelay, maxPowerUpDelay) + powerUpTimePeriod ;
+        nextPowerUpTime = Time.timeSinceLevelLoad + UnityEngine.Random.Range(minPowerUpDelay, maxPowerUpDelay);
         StartCoroutine(SpawnPowerUpCoroutine());
         StartCoroutine(PowerUpPeriodLapsedCoroutine());
     }
 
     IEnumerator SpawnPowerUpCoroutine()
     {
-        yield return new WaitForSecondsRealtime((float)powerUpTimePeriod / (float)2f);
-
-        Vector3 direction = transform.position;
-        direction.y = UnityEngine.Random.Range(minHeight, maxHeight);
-        PowerUps spawnedPowerUp = Instantiate(powerUp, direction, quaternion.identity);
-        spawnedPowerUp.SetPowerUp("Reverse Gravity", nextPowerUpTime - Time.timeSinceLevelLoad - 1);
+        yield return new WaitForSecondsRealtime(powerUpTimePeriod / 2f);
+        InstantiatePowerUp();
     }
 
     IEnumerator PowerUpPeriodLapsedCoroutine()
     {
         yield return new WaitForSecondsRealtime(powerUpTimePeriod);
-        gameManager.EnableSpawner();
+        gameManager.EnablePipeSpawner();
         powerUpSpawned = false;
+    }
+
+    private void InstantiatePowerUp()
+    {
+        Vector3 direction = transform.position;
+        direction.y = UnityEngine.Random.Range(minHeight, maxHeight);
+        PowerUps spawnedPowerUp = Instantiate(powerUp, direction, quaternion.identity);
+        spawnedPowerUp.SetPowerUp("Reverse Gravity", nextPowerUpTime - Time.timeSinceLevelLoad - 1);
     }
 }

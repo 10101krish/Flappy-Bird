@@ -37,10 +37,10 @@ public class PowerUps : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-        if (other.gameObject.tag == "Player")
+        if (other.gameObject.CompareTag("Player"))
         {
-            gameManager.ReverseGravityMethod(powerUpDuration, powerUpMessage);
-            Destroy(this.gameObject);
+            gameManager.ReverseGravityMethod(powerUpMessage);
+            Destroy(gameObject);
         }
     }
 }
