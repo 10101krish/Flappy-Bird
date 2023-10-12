@@ -42,7 +42,7 @@ public class PowerUpSpawner : MonoBehaviour
     {
         gameManager.DisableSpawner();
         powerUpSpawned = true;
-        nextPowerUpTime = Time.timeSinceLevelLoad + UnityEngine.Random.Range(minPowerUpDelay, maxPowerUpDelay) + powerUpTimePeriod + powerUpDuration;
+        nextPowerUpTime = Time.timeSinceLevelLoad + UnityEngine.Random.Range(minPowerUpDelay, maxPowerUpDelay) + powerUpTimePeriod ;
         StartCoroutine(SpawnPowerUpCoroutine());
         StartCoroutine(PowerUpPeriodLapsedCoroutine());
     }
@@ -54,7 +54,7 @@ public class PowerUpSpawner : MonoBehaviour
         Vector3 direction = transform.position;
         direction.y = UnityEngine.Random.Range(minHeight, maxHeight);
         PowerUps spawnedPowerUp = Instantiate(powerUp, direction, quaternion.identity);
-        spawnedPowerUp.SetPowerUp("Reverse Gravity", powerUpDuration);
+        spawnedPowerUp.SetPowerUp("Reverse Gravity", nextPowerUpTime - Time.timeSinceLevelLoad - 1);
     }
 
     IEnumerator PowerUpPeriodLapsedCoroutine()
